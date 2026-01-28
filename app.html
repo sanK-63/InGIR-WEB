@@ -1,0 +1,1154 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>InGIR Pro | Приложение</title>
+    
+    <!-- Стили -->
+    <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    
+    <style>
+        /* Дополнительные стили для приложения */
+        .app-container {
+            max-width: 1400px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+        
+        .app-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 20px 0;
+            margin-bottom: 30px;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+        }
+        
+        .user-info {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+        }
+        
+        .user-avatar {
+            width: 50px;
+            height: 50px;
+            border-radius: 50%;
+            background: linear-gradient(45deg, var(--accent-blue), var(--accent-purple));
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 20px;
+        }
+        
+        .app-nav {
+            display: flex;
+            gap: 15px;
+            margin-bottom: 30px;
+        }
+        
+        .nav-btn {
+            padding: 12px 24px;
+            background: rgba(255, 255, 255, 0.05);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            border-radius: 10px;
+            color: var(--text-secondary);
+            cursor: pointer;
+            transition: all 0.3s ease;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+        
+        .nav-btn.active {
+            background: linear-gradient(45deg, var(--accent-blue), var(--accent-purple));
+            color: white;
+            border-color: transparent;
+        }
+        
+        .nav-btn:hover:not(.active) {
+            background: rgba(255, 255, 255, 0.1);
+            color: var(--text-primary);
+        }
+        
+        .app-content {
+            display: grid;
+            grid-template-columns: 1fr 300px;
+            gap: 30px;
+        }
+        
+        .main-panel {
+            background: var(--card-bg);
+            border-radius: 20px;
+            padding: 30px;
+            border: 1px solid var(--card-border);
+        }
+        
+        .sidebar {
+            display: flex;
+            flex-direction: column;
+            gap: 20px;
+        }
+        
+        .status-card {
+            background: var(--card-bg);
+            border-radius: 15px;
+            padding: 20px;
+            border: 1px solid var(--card-border);
+        }
+        
+        .status-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 15px;
+        }
+        
+        .status-badge {
+            padding: 5px 15px;
+            border-radius: 20px;
+            font-size: 12px;
+            font-weight: 600;
+        }
+        
+        .status-active {
+            background: rgba(0, 255, 157, 0.1);
+            color: var(--accent-green);
+            border: 1px solid var(--accent-green);
+        }
+        
+        .status-inactive {
+            background: rgba(255, 46, 142, 0.1);
+            color: var(--accent-pink);
+            border: 1px solid var(--accent-pink);
+        }
+        
+        .status-warning {
+            background: rgba(255, 204, 0, 0.1);
+            color: #ffcc00;
+            border: 1px solid #ffcc00;
+        }
+        
+        .tools-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+            gap: 20px;
+            margin-top: 20px;
+        }
+        
+        .tool-card {
+            background: rgba(255, 255, 255, 0.05);
+            border-radius: 15px;
+            padding: 20px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            border: 1px solid transparent;
+        }
+        
+        .tool-card:hover {
+            background: rgba(255, 255, 255, 0.1);
+            border-color: var(--accent-blue);
+            transform: translateY(-5px);
+        }
+        
+        .tool-icon {
+            width: 60px;
+            height: 60px;
+            border-radius: 12px;
+            background: linear-gradient(45deg, var(--accent-blue), var(--accent-purple));
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 24px;
+            margin-bottom: 15px;
+        }
+        
+        .usage-stats {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 15px;
+            margin-top: 30px;
+        }
+        
+        .stat-box {
+            background: rgba(255, 255, 255, 0.05);
+            border-radius: 12px;
+            padding: 20px;
+            text-align: center;
+        }
+        
+        .stat-value {
+            font-size: 32px;
+            font-weight: 700;
+            margin: 10px 0;
+            background: linear-gradient(45deg, var(--accent-blue), var(--accent-purple));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+        
+        .subscription-info {
+            margin-top: 20px;
+            padding-top: 20px;
+            border-top: 1px solid rgba(255, 255, 255, 0.1);
+        }
+        
+        .subscription-info h4 {
+            margin-bottom: 10px;
+        }
+        
+        .time-left {
+            font-size: 14px;
+            color: var(--text-muted);
+        }
+        
+        .expired-warning {
+            background: rgba(255, 46, 142, 0.1);
+            border: 1px solid var(--accent-pink);
+            border-radius: 10px;
+            padding: 15px;
+            margin-top: 15px;
+            text-align: center;
+        }
+        
+        .btn-renew {
+            width: 100%;
+            margin-top: 10px;
+            padding: 12px;
+            background: linear-gradient(45deg, var(--accent-pink), var(--accent-purple));
+            border: none;
+            border-radius: 10px;
+            color: white;
+            cursor: pointer;
+            font-weight: 600;
+            transition: all 0.3s ease;
+        }
+        
+        .btn-renew:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 10px 20px rgba(255, 46, 142, 0.3);
+        }
+        
+        .logout-btn {
+            margin-top: 20px;
+            padding: 10px 20px;
+            background: rgba(255, 255, 255, 0.05);
+            border: 1px solid rgba(255, 46, 142, 0.3);
+            border-radius: 10px;
+            color: var(--accent-pink);
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+        
+        .logout-btn:hover {
+            background: rgba(255, 46, 142, 0.1);
+        }
+        
+        /* Синхронизация статуса */
+        .sync-indicator {
+            display: inline-flex;
+            align-items: center;
+            gap: 5px;
+            font-size: 12px;
+            color: var(--text-muted);
+            margin-left: 10px;
+            cursor: pointer;
+        }
+        
+        .sync-indicator i {
+            font-size: 10px;
+        }
+        
+        .sync-indicator.syncing i {
+            animation: spin 1s linear infinite;
+        }
+        
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+        
+        /* Обновленная информация о подписке */
+        .subscription-details {
+            background: rgba(255, 255, 255, 0.03);
+            border-radius: 10px;
+            padding: 15px;
+            margin-top: 15px;
+        }
+        
+        .subscription-details p {
+            margin: 8px 0;
+            display: flex;
+            justify-content: space-between;
+        }
+        
+        .subscription-details .label {
+            color: var(--text-secondary);
+        }
+        
+        .subscription-details .value {
+            color: var(--text-primary);
+            font-weight: 500;
+        }
+        
+        @media (max-width: 768px) {
+            .app-content {
+                grid-template-columns: 1fr;
+            }
+            
+            .app-header {
+                flex-direction: column;
+                gap: 20px;
+                text-align: center;
+            }
+            
+            .user-info {
+                flex-direction: column;
+            }
+            
+            .tools-grid {
+                grid-template-columns: repeat(2, 1fr);
+            }
+            
+            .usage-stats {
+                grid-template-columns: 1fr;
+            }
+        }
+        
+        @media (max-width: 480px) {
+            .tools-grid {
+                grid-template-columns: 1fr;
+            }
+            
+            .app-nav {
+                flex-wrap: wrap;
+            }
+            
+            .nav-btn {
+                flex: 1;
+                min-width: 120px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Фоновые частицы -->
+    <canvas id="particles-canvas"></canvas>
+    <div class="neon-glow"></div>
+    <div class="neon-grid"></div>
+    
+    <!-- Главный контейнер -->
+    <div class="app-container">
+        <!-- Шапка -->
+        <header class="app-header">
+            <div class="logo">
+                <h1>InGIR<span class="gradient-text">Pro</span></h1>
+                <p class="tagline">Интеллектуальный инжинер-асистент</p>
+            </div>
+            
+            <div class="nav-auth-container">
+                <!-- Здесь будет мини-профиль или кнопка входа -->
+            </div>
+        </header>
+        
+        <!-- Навигация -->
+        <nav class="app-nav">
+            <button class="nav-btn active" data-panel="dashboard">
+                <i class="fas fa-chart-line"></i>
+                Дашборд
+            </button>
+            <button class="nav-btn" data-panel="tools">
+                <i class="fas fa-tools"></i>
+                Инструменты
+            </button>
+            <button class="nav-btn" data-panel="projects">
+                <i class="fas fa-folder-open"></i>
+                Проекты
+            </button>
+            <button class="nav-btn" data-panel="settings">
+                <i class="fas fa-cog"></i>
+                Настройки
+            </button>
+        </nav>
+        
+        <!-- Основной контент -->
+        <div class="app-content">
+            <!-- Главная панель -->
+            <main class="main-panel">
+                <!-- Контент будет меняться в зависимости от выбранной вкладки -->
+                <div id="dashboard-panel" class="panel-content active">
+                    <h2>Добро пожаловать в InGIR Pro!</h2>
+                    <p class="lead">Ваш интеллектуальный помощник для инженерных расчетов и проектирования.</p>
+                    
+                    <div class="usage-stats">
+                        <div class="stat-box">
+                            <i class="fas fa-calculator"></i>
+                            <div class="stat-value" id="calc-count">0</div>
+                            <p>Выполнено расчетов</p>
+                        </div>
+                        <div class="stat-box">
+                            <i class="fas fa-file-alt"></i>
+                            <div class="stat-value" id="project-count">0</div>
+                            <p>Создано проектов</p>
+                        </div>
+                        <div class="stat-box">
+                            <i class="fas fa-clock"></i>
+                            <div class="stat-value" id="time-saved">0</div>
+                            <p>Часов сэкономлено</p>
+                        </div>
+                    </div>
+                    
+                    <h3 class="mt-40">Быстрый доступ</h3>
+                    <div class="tools-grid">
+                        <div class="tool-card" data-tool="calculator">
+                            <div class="tool-icon">
+                                <i class="fas fa-calculator"></i>
+                            </div>
+                            <h4>Калькулятор</h4>
+                            <p>Инженерные расчеты</p>
+                        </div>
+                        <div class="tool-card" data-tool="converter">
+                            <div class="tool-icon">
+                                <i class="fas fa-exchange-alt"></i>
+                            </div>
+                            <h4>Конвертер</h4>
+                            <p>Единицы измерения</p>
+                        </div>
+                        <div class="tool-card" data-tool="scheme">
+                            <div class="tool-icon">
+                                <i class="fas fa-project-diagram"></i>
+                            </div>
+                            <h4>Схемы</h4>
+                            <p>Создание схем</p>
+                        </div>
+                        <div class="tool-card" data-tool="doc">
+                            <div class="tool-icon">
+                                <i class="fas fa-file-contract"></i>
+                            </div>
+                            <h4>Документы</h4>
+                            <p>Шаблоны документов</p>
+                        </div>
+                    </div>
+                </div>
+                
+                <div id="tools-panel" class="panel-content">
+                    <h2>Инструменты</h2>
+                    <p>Доступные инструменты для работы</p>
+                    <div class="tools-grid">
+                        <!-- Инструменты будут загружаться динамически -->
+                    </div>
+                </div>
+                
+                <div id="projects-panel" class="panel-content">
+                    <h2>Мои проекты</h2>
+                    <p>Здесь будут отображаться ваши проекты</p>
+                    <div id="projects-list">
+                        <!-- Проекты будут загружаться динамически -->
+                    </div>
+                </div>
+                
+                <div id="settings-panel" class="panel-content">
+                    <h2>Настройки</h2>
+                    <p>Настройте приложение под себя</p>
+                    <div class="settings-options">
+                        <!-- Настройки -->
+                    </div>
+                </div>
+            </main>
+            
+            <!-- Сайдбар -->
+            <aside class="sidebar">
+                <!-- Статус подписки -->
+                <div class="status-card">
+                    <div class="status-header">
+                        <h3>Статус подписки</h3>
+                        <div>
+                            <span class="status-badge" id="status-badge">Загрузка...</span>
+                            <span class="sync-indicator" id="sync-indicator" title="Последняя синхронизация">
+                                <i class="fas fa-sync-alt"></i>
+                                <span id="last-sync">—</span>
+                            </span>
+                        </div>
+                    </div>
+                    <div id="subscription-details">
+                        <div class="subscription-details" id="subscription-details-content">
+                            <p>
+                                <span class="label">Тип:</span>
+                                <span class="value" id="subscription-type">Загрузка...</span>
+                            </p>
+                            <p>
+                                <span class="label">Статус:</span>
+                                <span class="value" id="subscription-status">Загрузка...</span>
+                            </p>
+                            <p>
+                                <span class="label">Обновлено:</span>
+                                <span class="value" id="subscription-updated">—</span>
+                            </p>
+                        </div>
+                    </div>
+                    <div class="subscription-info">
+                        <h4>Действует до:</h4>
+                        <p class="time-left" id="subscription-until">—</p>
+                    </div>
+                    <div id="expired-warning" class="expired-warning" style="display: none;">
+                        <i class="fas fa-exclamation-triangle"></i>
+                        <p>Ваша подписка истекла</p>
+                        <button class="btn-renew" id="renew-btn">Продлить подписку</button>
+                    </div>
+                    
+                    <!-- Кнопка принудительной синхронизации -->
+                    <button class="btn-renew" id="force-sync-btn" style="margin-top: 10px; background: linear-gradient(45deg, var(--accent-blue), var(--accent-purple));">
+                        <i class="fas fa-sync-alt"></i> Синхронизировать подписку
+                    </button>
+                </div>
+                
+                <!-- Помощь -->
+                <div class="status-card">
+                    <h3>Помощь и поддержка</h3>
+                    <p>Нужна помощь? Обратитесь в нашу поддержку.</p>
+                    <button class="btn-renew" onclick="openSupport()">
+                        <i class="fas fa-headset"></i> Техподдержка
+                    </button>
+                </div>
+                
+                <!-- Кнопка выхода -->
+                <button class="logout-btn-profile" id="logout-btn">
+                    <i class="fas fa-sign-out-alt"></i> Выйти из аккаунта
+                </button>
+            </aside>
+        </div>
+    </div>
+    
+    <!-- Уведомления -->
+    <div class="notifications-container"></div>
+    
+    <!-- Подключаем библиотеки -->
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+    
+    <!-- Наш скрипт -->
+    <script>
+        // Конфигурация Supabase
+        const SUPABASE_URL = "https://jacoyuuictmjascjqqpq.supabase.co";
+        const SUPABASE_KEY = "sb_publishable_N-2xmPcg8a4NAofPW6dqxA_zfdLSJ9O";
+        
+        // Инициализация
+        document.addEventListener('DOMContentLoaded', async () => {
+            console.log("🚀 Приложение загружается...");
+            
+            // Инициализируем Supabase
+            const supabase = window.supabase.createClient(SUPABASE_URL, SUPABASE_KEY);
+            
+            // Проверяем авторизацию
+            const { data: { user } } = await supabase.auth.getUser();
+            
+            if (!user) {
+                // Пользователь не авторизован - перенаправляем на страницу входа
+                console.log("❌ Пользователь не авторизован");
+                window.location.href = "index-Auth.html";
+                return;
+            }
+            
+            console.log("✅ Пользователь авторизован:", user.email);
+            
+            // Проверяем подписку
+            await checkSubscription(user);
+            
+            // Настраиваем интерфейс
+            setupUI();
+            
+            // Настраиваем обработчики событий
+            setupEventListeners();
+            
+            // Загружаем данные пользователя
+            loadUserData(user);
+            
+            // Настраиваем синхронизацию подписки
+            setupSubscriptionSync();
+            
+            console.log("✅ Приложение готово к работе");
+        });
+        
+        // ПРОВЕРКА ПОДПИСКИ
+        async function checkSubscription(user) {
+            console.log("🔍 Проверяю подписку пользователя:", user.id);
+            
+            const supabase = window.supabase.createClient(SUPABASE_URL, SUPABASE_KEY);
+            
+            try {
+                const { data: profile, error } = await supabase
+                    .from("profiles")
+                    .select("subscription_active, subscription_until, subscription_type, subscription_tier, updated_at")
+                    .eq("id", user.id)
+                    .single();
+                
+                if (error) {
+                    // Если профиль не найден или другая ошибка
+                    console.error("❌ Ошибка получения профиля:", error);
+                    showSubscriptionError();
+                    return;
+                }
+                
+                console.log("📋 Данные подписки:", profile);
+                
+                // Обновляем интерфейс в зависимости от статуса подписки
+                updateSubscriptionUI(profile);
+                
+                // Сохраняем время последней синхронизации
+                updateSyncTime();
+                
+            } catch (err) {
+                console.error("❌ Ошибка проверки подписки:", err);
+                showSubscriptionError();
+            }
+        }
+        
+        // ОБНОВЛЕНИЕ ИНТЕРФЕЙСА ПОДПИСКИ
+        function updateSubscriptionUI(profile) {
+            console.log("🎨 Обновляю UI подписки:", profile);
+            
+            const isActive = profile.subscription_active;
+            const until = profile.subscription_until;
+            const subscriptionType = profile.subscription_type || 'Бесплатная';
+            const subscriptionTier = profile.subscription_tier || 'free';
+            const updatedAt = profile.updated_at;
+            const isExpired = until ? new Date(until) < new Date() : true;
+            
+            const badge = document.getElementById('status-badge');
+            const details = document.getElementById('subscription-details-content');
+            const untilElement = document.getElementById('subscription-until');
+            const expiredWarning = document.getElementById('expired-warning');
+            const subscriptionTypeElement = document.getElementById('subscription-type');
+            const subscriptionStatusElement = document.getElementById('subscription-status');
+            const subscriptionUpdatedElement = document.getElementById('subscription-updated');
+            
+            // Проверяем, что элементы существуют перед обновлением
+            if (badge) {
+                if (isActive && !isExpired) {
+                    // Подписка активна
+                    badge.textContent = subscriptionType.toUpperCase();
+                    badge.className = "status-badge status-active";
+                    
+                    if (subscriptionStatusElement) {
+                        subscriptionStatusElement.textContent = "Активна";
+                        subscriptionStatusElement.style.color = "var(--accent-green)";
+                    }
+                    
+                } else if (until && isExpired) {
+                    // Подписка истекла
+                    badge.textContent = "ИСТЕКЛА";
+                    badge.className = "status-badge status-warning";
+                    
+                    if (subscriptionStatusElement) {
+                        subscriptionStatusElement.textContent = "Истекла";
+                        subscriptionStatusElement.style.color = "#ffcc00";
+                    }
+                    
+                } else {
+                    // Подписка не активна или истекла
+                    badge.textContent = "НЕТ ПОДПИСКИ";
+                    badge.className = "status-badge status-inactive";
+                    
+                    if (subscriptionStatusElement) {
+                        subscriptionStatusElement.textContent = "Не активна";
+                        subscriptionStatusElement.style.color = "var(--accent-pink)";
+                    }
+                }
+            }
+            
+            // Обновляем тип подписки
+            if (subscriptionTypeElement) {
+                subscriptionTypeElement.textContent = subscriptionType;
+            }
+            
+            // Обновляем время обновления
+            if (subscriptionUpdatedElement && updatedAt) {
+                const updatedDate = new Date(updatedAt);
+                subscriptionUpdatedElement.textContent = updatedDate.toLocaleString('ru-RU');
+            }
+            
+            // Обновляем дату истечения
+            if (untilElement) {
+                if (until) {
+                    const untilDate = new Date(until);
+                    untilElement.textContent = untilDate.toLocaleDateString('ru-RU');
+                    
+                    if (isActive && !isExpired) {
+                        untilElement.style.color = "var(--accent-green)";
+                        
+                        // Предупреждение, если подписка скоро истекает (менее 7 дней)
+                        const daysLeft = Math.ceil((untilDate - new Date()) / (1000 * 60 * 60 * 24));
+                        if (daysLeft <= 7 && daysLeft > 0) {
+                            // Показываем предупреждение в details
+                            if (details) {
+                                // Проверяем, нет ли уже предупреждения
+                                let warningDiv = details.querySelector('.expiring-warning');
+                                if (!warningDiv) {
+                                    warningDiv = document.createElement('div');
+                                    warningDiv.className = 'expiring-warning';
+                                    warningDiv.style.cssText = 'margin-top: 10px; padding: 10px; background: rgba(255, 204, 0, 0.1); border: 1px solid #ffcc00; border-radius: 5px;';
+                                    warningDiv.innerHTML = `
+                                        <i class="fas fa-exclamation-triangle"></i>
+                                        <p>Подписка истекает через ${daysLeft} ${getDayWord(daysLeft)}</p>
+                                        <button class="btn-renew" onclick="window.location.href='pay.html'" style="background: linear-gradient(45deg, #ffcc00, #ff9900); margin-top: 5px;">
+                                            Продлить сейчас
+                                        </button>
+                                    `;
+                                    details.appendChild(warningDiv);
+                                }
+                            }
+                        } else {
+                            // Удаляем предупреждение если есть
+                            if (details) {
+                                const warningDiv = details.querySelector('.expiring-warning');
+                                if (warningDiv) {
+                                    warningDiv.remove();
+                                }
+                            }
+                        }
+                    } else if (isExpired) {
+                        untilElement.textContent = `Истекла ${untilDate.toLocaleDateString('ru-RU')}`;
+                        untilElement.style.color = "#ffcc00";
+                    }
+                } else {
+                    untilElement.textContent = "—";
+                    untilElement.style.color = "var(--text-muted)";
+                }
+            }
+            
+            // Показываем/скрываем предупреждение об истечении
+            if (expiredWarning) {
+                if ((!isActive || isExpired) && !(until && !isExpired)) {
+                    expiredWarning.style.display = 'block';
+                } else {
+                    expiredWarning.style.display = 'none';
+                }
+            }
+            
+            // Обновляем мини-профиль в навигации через UserProfile
+            updateMiniProfileSubscription(isActive && !isExpired, subscriptionType);
+        }
+        
+        // ОБНОВЛЕНИЕ МИНИ-ПРОФИЛЯ В НАВИГАЦИИ
+        function updateMiniProfileSubscription(isActive, subscriptionType) {
+            // Обновляем через UserProfile если доступен
+            if (window.UserProfile && window.UserProfile.updateUserData) {
+                const currentData = window.UserProfile.getUserData();
+                if (currentData) {
+                    window.UserProfile.updateUserData({
+                        subscription: {
+                            ...currentData.subscription,
+                            active: isActive,
+                            type: subscriptionType,
+                            isExpired: !isActive
+                        }
+                    });
+                }
+            }
+            
+            // Также обновляем напрямую если элементы есть на странице
+            const statusDot = document.querySelector('.status-dot');
+            const statusText = document.querySelector('.user-subscription span');
+            
+            if (statusDot && statusText) {
+                if (isActive) {
+                    statusDot.className = 'status-dot status-active';
+                    statusText.textContent = subscriptionType;
+                    statusText.style.color = 'var(--accent-green)';
+                } else {
+                    statusDot.className = 'status-dot status-inactive';
+                    statusText.textContent = 'Не активна';
+                    statusText.style.color = 'var(--accent-pink)';
+                }
+            }
+        }
+        
+        // ПОКАЗАТЬ ОШИБКУ ПОДПИСКИ
+        function showSubscriptionError() {
+            const badge = document.getElementById('status-badge');
+            const details = document.getElementById('subscription-details-content');
+            
+            if (badge) {
+                badge.textContent = "ОШИБКА";
+                badge.className = "status-badge status-inactive";
+            }
+            
+            if (details) {
+                details.innerHTML = `
+                    <p>
+                        <span class="label">Статус:</span>
+                        <span class="value" style="color: var(--accent-pink);">Ошибка загрузки</span>
+                    </p>
+                    <p>
+                        <span class="label">Информация:</span>
+                        <span class="value">Не удалось получить данные о подписке</span>
+                    </p>
+                `;
+            }
+        }
+        
+        // ОБНОВЛЕНИЕ ВРЕМЕНИ СИНХРОНИЗАЦИИ
+        function updateSyncTime() {
+            const now = new Date();
+            const syncTimeElement = document.getElementById('last-sync');
+            const syncIndicator = document.getElementById('sync-indicator');
+            
+            if (syncTimeElement) {
+                syncTimeElement.textContent = now.toLocaleTimeString('ru-RU', { 
+                    hour: '2-digit', 
+                    minute: '2-digit' 
+                });
+            }
+            
+            // Убираем анимацию синхронизации
+            if (syncIndicator) {
+                syncIndicator.classList.remove('syncing');
+                // Обновляем title
+                syncIndicator.title = `Последняя синхронизация: ${now.toLocaleString('ru-RU')}`;
+            }
+        }
+        
+        // НАСТРОЙКА СИНХРОНИЗАЦИИ ПОДПИСКИ
+        function setupSubscriptionSync() {
+            const forceSyncBtn = document.getElementById('force-sync-btn');
+            const syncIndicator = document.getElementById('sync-indicator');
+            
+            if (!forceSyncBtn || !syncIndicator) {
+                console.warn("⚠️ Элементы синхронизации не найдены");
+                return;
+            }
+            
+            // Обработчик принудительной синхронизации
+            forceSyncBtn.addEventListener('click', async () => {
+                console.log("🔄 Принудительная синхронизация подписки...");
+                
+                // Показываем индикатор синхронизации
+                syncIndicator.classList.add('syncing');
+                forceSyncBtn.disabled = true;
+                forceSyncBtn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Синхронизация...';
+                
+                try {
+                    const supabase = window.supabase.createClient(SUPABASE_URL, SUPABASE_KEY);
+                    const { data: { user } } = await supabase.auth.getUser();
+                    
+                    if (user) {
+                        await checkSubscription(user);
+                        showNotification('Подписка успешно синхронизирована', 'success');
+                    }
+                } catch (error) {
+                    console.error("❌ Ошибка синхронизации:", error);
+                    showNotification('Ошибка синхронизации подписки', 'error');
+                } finally {
+                    // Восстанавливаем кнопку
+                    setTimeout(() => {
+                        syncIndicator.classList.remove('syncing');
+                        forceSyncBtn.disabled = false;
+                        forceSyncBtn.innerHTML = '<i class="fas fa-sync-alt"></i> Синхронизировать подписку';
+                    }, 1000);
+                }
+            });
+            
+            // Слушатель событий обновления подписки
+            window.addEventListener('subscriptionChanged', (event) => {
+                console.log("📢 Получено событие обновления подписки:", event.detail);
+                
+                // Обновляем интерфейс при получении события
+                const subscription = event.detail.subscription;
+                
+                // Преобразуем формат данных для совместимости
+                const profileData = {
+                    subscription_active: subscription.active,
+                    subscription_until: subscription.until,
+                    subscription_type: subscription.type || 'Бесплатная',
+                    subscription_tier: subscription.tier || 'free',
+                    updated_at: event.detail.timestamp || new Date().toISOString()
+                };
+                
+                updateSubscriptionUI(profileData);
+                updateSyncTime();
+                
+                // Показываем уведомление
+                showNotification(`Подписка обновлена: ${subscription.type}`, 'success');
+            });
+            
+            // Слушатель сообщений от других скриптов
+            window.addEventListener('message', (event) => {
+                if (event.data && event.data.type === 'SUBSCRIPTION_SYNC_UPDATE') {
+                    console.log("🔄 Получено обновление подписки из другого скрипта:", event.data);
+                    
+                    // Обновляем UserProfile
+                    if (window.UserProfile && window.UserProfile.updateUserData) {
+                        window.UserProfile.updateUserData({
+                            subscription: event.data.subscription
+                        });
+                    }
+                    
+                    // Обновляем интерфейс
+                    const profileData = {
+                        subscription_active: event.data.subscription.active,
+                        subscription_until: event.data.subscription.until,
+                        subscription_type: event.data.subscription.type || 'Бесплатная',
+                        subscription_tier: event.data.subscription.tier || 'free',
+                        updated_at: new Date().toISOString()
+                    };
+                    
+                    updateSubscriptionUI(profileData);
+                    updateSyncTime();
+                }
+            });
+            
+            // Периодическая синхронизация (каждые 5 минут)
+            setInterval(async () => {
+                const supabase = window.supabase.createClient(SUPABASE_URL, SUPABASE_KEY);
+                const { data: { user } } = await supabase.auth.getUser();
+                
+                if (user) {
+                    console.log("🔄 Автоматическая синхронизация подписки...");
+                    await checkSubscription(user);
+                }
+            }, 5 * 60 * 1000); // 5 минут
+        }
+        
+        // НАСТРОЙКА ИНТЕРФЕЙСА
+        function setupUI() {
+            // Навигация по панелям
+            document.querySelectorAll('.nav-btn').forEach(btn => {
+                btn.addEventListener('click', () => {
+                    const panel = btn.getAttribute('data-panel');
+                    
+                    // Убираем активный класс у всех кнопок
+                    document.querySelectorAll('.nav-btn').forEach(b => b.classList.remove('active'));
+                    // Добавляем активный класс текущей кнопке
+                    btn.classList.add('active');
+                    
+                    // Скрываем все панели
+                    document.querySelectorAll('.panel-content').forEach(p => p.classList.remove('active'));
+                    // Показываем выбранную панель
+                    document.getElementById(`${panel}-panel`).classList.add('active');
+                });
+            });
+            
+            // Обработка кликов по инструментам
+            document.querySelectorAll('.tool-card').forEach(card => {
+                card.addEventListener('click', () => {
+                    const tool = card.getAttribute('data-tool');
+                    openTool(tool);
+                });
+            });
+        }
+        
+        // НАСТРОЙКА ОБРАБОТЧИКОВ СОБЫТИЙ
+        function setupEventListeners() {
+            // Кнопка выхода
+            const logoutBtn = document.getElementById('logout-btn');
+            if (logoutBtn) {
+                logoutBtn.addEventListener('click', async () => {
+                    const supabase = window.supabase.createClient(SUPABASE_URL, SUPABASE_KEY);
+                    await supabase.auth.signOut();
+                    window.location.href = "index-Auth.html";
+                });
+            }
+            
+            // Кнопка продления подписки
+            const renewBtn = document.getElementById('renew-btn');
+            if (renewBtn) {
+                renewBtn.addEventListener('click', () => {
+                    window.location.href = "pay.html";
+                });
+            }
+            
+            // Кнопка техподдержки
+            window.openSupport = function() {
+                window.open('mailto:support@ingirpro.com', '_blank');
+            };
+        }
+        
+        // ЗАГРУЗКА ДАННЫХ ПОЛЬЗОВАТЕЛЯ
+        async function loadUserData(user) {
+            const supabase = window.supabase.createClient(SUPABASE_URL, SUPABASE_KEY);
+            
+            try {
+                // Загружаем статистику пользователя
+                const { data: stats, error } = await supabase
+                    .from("user_stats")
+                    .select("*")
+                    .eq("user_id", user.id)
+                    .single();
+                
+                if (!error && stats) {
+                    // Обновляем счетчики
+                    const calcCount = document.getElementById('calc-count');
+                    const projectCount = document.getElementById('project-count');
+                    const timeSaved = document.getElementById('time-saved');
+                    
+                    if (calcCount) calcCount.textContent = stats.calculations || 0;
+                    if (projectCount) projectCount.textContent = stats.projects || 0;
+                    if (timeSaved) timeSaved.textContent = stats.hours_saved || 0;
+                }
+                
+                // Загружаем проекты пользователя
+                const { data: projects } = await supabase
+                    .from("projects")
+                    .select("*")
+                    .eq("user_id", user.id)
+                    .order('created_at', { ascending: false })
+                    .limit(10);
+                
+                if (projects && projects.length > 0) {
+                    const projectsList = document.getElementById('projects-list');
+                    if (projectsList) {
+                        projectsList.innerHTML = '';
+                        
+                        projects.forEach(project => {
+                            const projectCard = document.createElement('div');
+                            projectCard.className = 'tool-card';
+                            projectCard.innerHTML = `
+                                <h4>${project.name}</h4>
+                                <p>Создан: ${new Date(project.created_at).toLocaleDateString('ru-RU')}</p>
+                                <p>Статус: ${project.status || 'В работе'}</p>
+                            `;
+                            projectsList.appendChild(projectCard);
+                        });
+                    }
+                }
+                
+            } catch (err) {
+                console.error("❌ Ошибка загрузки данных пользователя:", err);
+            }
+        }
+        
+        // ОТКРЫТИЕ ИНСТРУМЕНТА
+        function openTool(toolName) {
+            console.log(`Открываю инструмент: ${toolName}`);
+            
+            // Показываем уведомление
+            showNotification(`Открываю ${getToolName(toolName)}...`, 'success');
+            
+            // Переключаемся на панель инструментов
+            const toolsBtn = document.querySelector('[data-panel="tools"]');
+            if (toolsBtn) {
+                toolsBtn.click();
+            }
+        }
+        
+        // ФУНКЦИЯ ДЛЯ ПОКАЗА УВЕДОМЛЕНИЙ
+        function showNotification(message, type = 'info') {
+            const container = document.querySelector('.notifications-container');
+            if (!container) return;
+            
+            const notification = document.createElement('div');
+            notification.className = `notification ${type}`;
+            
+            let icon = 'info-circle';
+            if (type === 'success') icon = 'check-circle';
+            if (type === 'error') icon = 'exclamation-circle';
+            if (type === 'warning') icon = 'exclamation-triangle';
+            
+            notification.innerHTML = `
+                <div class="notification-header">
+                    <div class="notification-title">
+                        <i class="fas fa-${icon}"></i>
+                        <span>${type === 'success' ? 'Успешно' : type === 'error' ? 'Ошибка' : 'Информация'}</span>
+                    </div>
+                    <button class="notification-close">&times;</button>
+                </div>
+                <div class="notification-message">
+                    ${message}
+                </div>
+            `;
+            
+            container.appendChild(notification);
+            
+            // Автоматическое удаление уведомления через 5 секунд
+            setTimeout(() => {
+                notification.style.animation = 'slideOut 0.5s ease-out forwards';
+                setTimeout(() => notification.remove(), 500);
+            }, 5000);
+            
+            // Закрытие по клику
+            notification.querySelector('.notification-close').addEventListener('click', () => {
+                notification.style.animation = 'slideOut 0.5s ease-out forwards';
+                setTimeout(() => notification.remove(), 500);
+            });
+        }
+        
+        // ВСПОМОГАТЕЛЬНЫЕ ФУНКЦИИ
+        function getToolName(toolId) {
+            const tools = {
+                'calculator': 'Калькулятор',
+                'converter': 'Конвертер единиц',
+                'scheme': 'Редактор схем',
+                'doc': 'Генератор документов'
+            };
+            return tools[toolId] || 'Инструмент';
+        }
+        
+        function getDayWord(days) {
+            if (days === 1) return 'день';
+            if (days >= 2 && days <= 4) return 'дня';
+            return 'дней';
+        }
+        
+        // ПАРТИКЛИ (упрощенная версия)
+        function initParticles() {
+            const canvas = document.getElementById('particles-canvas');
+            if (!canvas) return;
+            
+            const ctx = canvas.getContext('2d');
+            let particles = [];
+            
+            function resizeCanvas() {
+                canvas.width = window.innerWidth;
+                canvas.height = window.innerHeight;
+                createParticles();
+            }
+            
+            function createParticles() {
+                particles = [];
+                const count = Math.floor((canvas.width * canvas.height) / 20000);
+                
+                for (let i = 0; i < count; i++) {
+                    particles.push({
+                        x: Math.random() * canvas.width,
+                        y: Math.random() * canvas.height,
+                        size: Math.random() * 2 + 0.5,
+                        speedX: Math.random() * 0.3 - 0.15,
+                        speedY: Math.random() * 0.3 - 0.15
+                    });
+                }
+            }
+            
+            function animate() {
+                requestAnimationFrame(animate);
+                ctx.fillStyle = 'rgba(10, 10, 20, 0.1)';
+                ctx.fillRect(0, 0, canvas.width, canvas.height);
+                
+                particles.forEach(p => {
+                    p.x += p.speedX;
+                    p.y += p.speedY;
+                    
+                    if (p.x < 0 || p.x > canvas.width) p.speedX *= -1;
+                    if (p.y < 0 || p.y > canvas.height) p.speedY *= -1;
+                    
+                    ctx.beginPath();
+                    ctx.arc(p.x, p.y, p.size, 0, Math.PI * 2);
+                    ctx.fillStyle = 'rgba(0, 212, 255, 0.5)';
+                    ctx.fill();
+                });
+            }
+            
+            window.addEventListener('resize', resizeCanvas);
+            resizeCanvas();
+            animate();
+        }
+        
+        // Запускаем частицы после загрузки
+        setTimeout(initParticles, 1000);
+    </script>
+    
+    <!-- Подключаем модули профиля и синхронизации -->
+    <script src="profile-module.js"></script>
+    <script src="subscription-sync.js"></script>
+    <script src="logout-handler.js"></script>
+</body>
+</html>

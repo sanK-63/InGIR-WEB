@@ -1,0 +1,295 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>InGIR Pro | Авторизация</title>
+    
+    <!-- Используем CDN для Font Awesome чтобы избежать ошибок -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <!-- Фоновые частицы -->
+    <canvas id="particles-canvas"></canvas>
+    
+    <!-- Неоновые эффекты -->
+    <div class="neon-glow"></div>
+    <div class="neon-grid"></div>
+    
+    <!-- Главный контейнер -->
+    <div class="auth-container">
+        <!-- Логотип и заголовок -->
+        <div class="logo-header">
+            <div class="logo-icon">
+                <i class="fas fa-atom"></i>
+                <div class="pulse-ring"></div>
+                <div class="pulse-ring ring-2"></div>
+            </div>
+            <h1 class="logo-title">InGIR<span class="gradient-text">Pro</span></h1>
+            <p class="logo-subtitle">Интеллектуальный инжинер-асистент</p>
+        </div>
+        
+        <!-- Переключатель форм -->
+        <div class="form-switcher">
+            <button class="switch-btn active" id="login-tab">
+                <i class="fas fa-sign-in-alt"></i>
+                Вход
+            </button>
+            <button class="switch-btn" id="register-tab">
+                <i class="fas fa-user-plus"></i>
+                Регистрация
+            </button>
+            <div class="switch-indicator"></div>
+        </div>
+        
+        <!-- Форма входа -->
+        <form class="auth-form active" id="login-form">
+            <div class="form-group">
+                <label class="input-label">
+                    <i class="fas fa-envelope"></i>
+                    <span>Email</span>
+                </label>
+                <div class="input-container">
+                    <input type="email" id="login-email" required 
+                           placeholder="your@email.com"
+                           class="form-input">
+                    <div class="input-border"></div>
+                </div>
+            </div>
+            
+            <div class="form-group">
+                <label class="input-label">
+                    <i class="fas fa-lock"></i>
+                    <span>Пароль</span>
+                </label>
+                <div class="input-container">
+                    <input type="password" id="login-password" required 
+                           placeholder="••••••••"
+                           class="form-input">
+                    <div class="input-border"></div>
+                    <button type="button" class="password-toggle">
+                        <i class="fas fa-eye"></i>
+                    </button>
+                </div>
+            </div>
+            
+            <div class="form-options">
+                <label class="checkbox-container">
+                    <input type="checkbox" id="remember-me">
+                    <span class="checkmark"></span>
+                    <span class="checkbox-label">Запомнить меня</span>
+                </label>
+                <a href="#" class="forgot-password" id="forgot-password">
+                    Забыли пароль?
+                </a>
+            </div>
+            
+            <button type="submit" class="submit-btn login-btn">
+                <span class="btn-text">Войти в систему</span>
+                <div class="btn-loader">
+                    <div class="loader-dot"></div>
+                    <div class="loader-dot"></div>
+                    <div class="loader-dot"></div>
+                </div>
+                <i class="fas fa-rocket btn-icon"></i>
+                <div class="btn-glow"></div>
+            </button>
+            
+            <div class="divider">
+                <span>или продолжить с</span>
+            </div>
+            
+            <div class="social-auth">
+                <button type="button" class="social-btn google-btn">
+                    <i class="fab fa-google"></i>
+                    Google
+                </button>
+                <button type="button" class="social-btn github-btn">
+                    <i class="fab fa-github"></i>
+                    GitHub
+                </button>
+                <button type="button" class="social-btn yandex-btn">
+                    <i class="fab fa-yandex"></i>
+                    Яндекс
+                </button>
+            </div>
+        </form>
+        
+        <!-- Форма регистрации -->
+        <form class="auth-form" id="register-form">
+            <div class="form-group">
+                <label class="input-label">
+                    <i class="fas fa-user"></i>
+                    <span>Имя пользователя</span>
+                </label>
+                <div class="input-container">
+                    <input type="text" id="register-username" required 
+                           placeholder="Введите ваше имя"
+                           class="form-input">
+                    <div class="input-border"></div>
+                </div>
+            </div>
+            
+            <div class="form-group">
+                <label class="input-label">
+                    <i class="fas fa-envelope"></i>
+                    <span>Email</span>
+                </label>
+                <div class="input-container">
+                    <input type="email" id="register-email" required 
+                           placeholder="your@email.com"
+                           class="form-input">
+                    <div class="input-border"></div>
+                </div>
+            </div>
+            
+            <div class="form-group">
+                <label class="input-label">
+                    <i class="fas fa-lock"></i>
+                    <span>Пароль</span>
+                </label>
+                <div class="input-container">
+                    <input type="password" id="register-password" required 
+                           placeholder="Минимум 8 символов"
+                           class="form-input">
+                    <div class="input-border"></div>
+                    <button type="button" class="password-toggle">
+                        <i class="fas fa-eye"></i>
+                    </button>
+                </div>
+                <div class="password-strength">
+                    <div class="strength-meter">
+                        <div class="strength-bar"></div>
+                    </div>
+                    <span class="strength-text">Надежность пароля: <span class="strength-value">Слабый</span></span>
+                </div>
+            </div>
+            
+            <div class="form-group">
+                <label class="input-label">
+                    <i class="fas fa-lock"></i>
+                    <span>Подтверждение пароля</span>
+                </label>
+                <div class="input-container">
+                    <input type="password" id="register-confirm" required 
+                           placeholder="Повторите пароль"
+                           class="form-input">
+                    <div class="input-border"></div>
+                </div>
+            </div>
+            
+            <div class="form-options">
+                <label class="checkbox-container">
+                    <input type="checkbox" id="accept-terms" required>
+                    <span class="checkmark"></span>
+                    <span class="checkbox-label">
+                        Я соглашаюсь с 
+                        <a href="#" class="terms-link">условиями использования</a> 
+                        и 
+                        <a href="#" class="terms-link">политикой конфиденциальности</a>
+                    </span>
+                </label>
+            </div>
+            
+            <button type="submit" class="submit-btn register-btn">
+                <span class="btn-text">Создать аккаунт</span>
+                <div class="btn-loader">
+                    <div class="loader-dot"></div>
+                    <div class="loader-dot"></div>
+                    <div class="loader-dot"></div>
+                </div>
+                <i class="fas fa-user-astronaut btn-icon"></i>
+                <div class="btn-glow"></div>
+            </button>
+        </form>
+        
+        <!-- Форма восстановления пароля -->
+        <form class="auth-form" id="reset-form">
+            <div class="back-to-login">
+                <button type="button" class="back-btn">
+                    <i class="fas fa-arrow-left"></i>
+                    Назад к входу
+                </button>
+            </div>
+            
+            <h3 class="reset-title">Восстановление пароля</h3>
+            <p class="reset-subtitle">Введите email, указанный при регистрации, и мы вышлем инструкции по восстановлению пароля</p>
+            
+            <div class="form-group">
+                <label class="input-label">
+                    <i class="fas fa-envelope"></i>
+                    <span>Email</span>
+                </label>
+                <div class="input-container">
+                    <input type="email" id="reset-email" required 
+                           placeholder="your@email.com"
+                           class="form-input">
+                    <div class="input-border"></div>
+                </div>
+            </div>
+            
+            <button type="submit" class="submit-btn reset-btn">
+                <span class="btn-text">Отправить инструкции</span>
+                <div class="btn-loader">
+                    <div class="loader-dot"></div>
+                    <div class="loader-dot"></div>
+                    <div class="loader-dot"></div>
+                </div>
+                <i class="fas fa-paper-plane btn-icon"></i>
+                <div class="btn-glow"></div>
+            </button>
+        </form>
+        
+        <!-- Индикатор системы -->
+        <div class="system-status">
+            <div class="status-indicator online">
+                <div class="status-dot"></div>
+                <span class="status-text">Supabase: Онлайн</span>
+            </div>
+            <div class="connection-stats">
+                <span class="stat-item">
+                    <i class="fas fa-users"></i>
+                    <span id="users-online">0</span> онлайн
+                </span>
+                <span class="stat-item">
+                    <i class="fas fa-shield-alt"></i>
+                    Защищено SSL
+                </span>
+            </div>
+        </div>
+    </div>
+    
+    <!-- Уведомления -->
+    <div class="notifications-container"></div>
+    
+    <!-- Модальное окно 2FA -->
+    <div class="modal-overlay" id="2fa-modal">
+        <div class="modal-container">
+            <div class="modal-header">
+                <h3 class="modal-title">
+                    <i class="fas fa-shield-alt"></i>
+                    Двухфакторная аутентификация
+                </h3>
+                <button class="modal-close">&times;</button>
+            </div>
+            <div class="modal-body">
+                <p>Введите код из приложения-аутентификатора</p>
+                <div class="otp-container">
+                    <input type="text" maxlength="1" class="otp-input">
+                    <input type="text" maxlength="1" class="otp-input">
+                    <input type="text" maxlength="1" class="otp-input">
+                    <input type="text" maxlength="1" class="otp-input">
+                    <input type="text" maxlength="1" class="otp-input">
+                    <input type="text" maxlength="1" class="otp-input">
+                </div>
+                <button class="verify-btn">Подтвердить</button>
+            </div>
+        </div>
+    </div>
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+    <script src="script.js"></script>
+    <script src="profile-module.js"></script>
+    <script src="profile-sync.js"></script>
+</body>
+</html>

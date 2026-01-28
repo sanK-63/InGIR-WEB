@@ -1,0 +1,348 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Личный кабинет | InGIR Pro</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;500;700;900&family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="style.css">
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+    <style>
+        .dashboard-container {
+            max-width: 1400px;
+            margin: 0 auto;
+            padding: 120px 20px 50px;
+        }
+        
+        .dashboard-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 50px;
+            padding: 30px;
+            background: var(--card-bg);
+            backdrop-filter: blur(20px);
+            border-radius: 20px;
+            border: 1px solid var(--card-border);
+            box-shadow: var(--glow-blue);
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .dashboard-header::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 3px;
+            background: linear-gradient(90deg, var(--accent-blue), var(--accent-purple), var(--accent-pink));
+        }
+        
+        .user-info {
+            display: flex;
+            align-items: center;
+            gap: 25px;
+        }
+        
+        .user-avatar {
+            width: 100px;
+            height: 100px;
+            border-radius: 50%;
+            background: linear-gradient(45deg, var(--accent-blue), var(--accent-purple));
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 40px;
+            font-weight: bold;
+            color: white;
+            box-shadow: var(--glow-blue);
+            border: 3px solid rgba(255, 255, 255, 0.1);
+        }
+        
+        .user-details h2 {
+            margin: 0;
+            font-size: 28px;
+            font-family: 'Orbitron', sans-serif;
+            font-weight: 700;
+        }
+        
+        .user-email {
+            color: var(--text-secondary);
+            font-size: 16px;
+            margin-top: 5px;
+        }
+        
+        .logout-btn {
+            padding: 15px 30px;
+            background: linear-gradient(45deg, var(--accent-pink), #ff6b6b);
+            border: none;
+            border-radius: 12px;
+            color: white;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all var(--transition-normal);
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            font-family: 'Inter', sans-serif;
+        }
+        
+        .logout-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: var(--glow-pink);
+        }
+        
+        .dashboard-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
+            gap: 30px;
+        }
+        
+        .dashboard-card {
+            background: var(--card-bg);
+            backdrop-filter: blur(20px);
+            border-radius: 20px;
+            padding: 30px;
+            border: 1px solid var(--card-border);
+            transition: all var(--transition-normal);
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .dashboard-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 3px;
+            background: linear-gradient(90deg, var(--accent-blue), var(--accent-purple));
+            opacity: 0;
+            transition: opacity var(--transition-normal);
+        }
+        
+        .dashboard-card:hover::before {
+            opacity: 1;
+        }
+        
+        .dashboard-card:hover {
+            transform: translateY(-5px);
+            box-shadow: var(--glow-blue);
+        }
+        
+        .card-header {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+            margin-bottom: 20px;
+        }
+        
+        .card-icon {
+            width: 60px;
+            height: 60px;
+            border-radius: 15px;
+            background: linear-gradient(45deg, var(--accent-blue), var(--accent-purple));
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 24px;
+            color: white;
+            box-shadow: var(--glow-blue);
+        }
+        
+        .card-title {
+            font-size: 22px;
+            margin: 0;
+            font-family: 'Orbitron', sans-serif;
+            font-weight: 600;
+        }
+        
+        .card-content {
+            color: var(--text-secondary);
+            line-height: 1.6;
+        }
+        
+        .stats-grid {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 20px;
+            margin-top: 20px;
+        }
+        
+        .stat-item {
+            text-align: center;
+            padding: 20px;
+            background: rgba(255, 255, 255, 0.05);
+            border-radius: 15px;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            transition: all var(--transition-normal);
+        }
+        
+        .stat-item:hover {
+            border-color: var(--accent-blue);
+            transform: translateY(-3px);
+        }
+        
+        .stat-value {
+            font-size: 36px;
+            font-weight: bold;
+            background: linear-gradient(45deg, var(--accent-blue), var(--accent-purple));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            font-family: 'Orbitron', sans-serif;
+        }
+        
+        .stat-label {
+            font-size: 14px;
+            color: var(--text-muted);
+            margin-top: 5px;
+        }
+        
+        .security-btn, .download-os-btn {
+            display: inline-flex;
+            align-items: center;
+            gap: 10px;
+            padding: 12px 20px;
+            background: rgba(255, 255, 255, 0.05);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            border-radius: 10px;
+            color: var(--text-primary);
+            font-family: 'Inter', sans-serif;
+            font-weight: 500;
+            cursor: pointer;
+            transition: all var(--transition-normal);
+            margin: 5px;
+        }
+        
+        .security-btn:hover, .download-os-btn:hover {
+            background: rgba(0, 212, 255, 0.1);
+            border-color: var(--accent-blue);
+            transform: translateY(-2px);
+        }
+        
+        .setting-item {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+            padding: 15px 0;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+        }
+        
+        .setting-item:last-child {
+            border-bottom: none;
+        }
+    </style>
+</head>
+<body>
+    <!-- Фоновые частицы -->
+    <canvas id="particles-canvas"></canvas>
+    <div class="neon-glow"></div>
+    <div class="neon-grid"></div>
+    
+    <!-- Навигация -->
+    <nav class="nav" style="background: rgba(10, 10, 20, 0.95);">
+        <div class="nav-container">
+            <a href="index.html" class="logo">
+                <i class="fas fa-atom logo-icon"></i>
+                <span>InGIR<span class="gradient-text">Pro</span></span>
+            </a>
+            
+            <div class="nav-links">
+                <a href="index.html#home" class="nav-link">Главная</a>
+                <a href="index.html#features" class="nav-link">Возможности</a>
+                <a href="index.html#download" class="nav-link">Скачать</a>
+                <a href="index.html#pricing" class="nav-link">Цены</a>
+                <div class="nav-auth-container"></div>
+            </div>
+        </div>
+    </nav>
+    
+    <div class="dashboard-container">
+        <header class="dashboard-header">
+            <div class="user-info">
+                <div class="user-avatar" id="user-avatar">
+                    <!-- Аватар загрузится через JS -->
+                </div>
+                <div class="user-details">
+                    <h2 id="user-name">Загрузка...</h2>
+                    <div class="user-email" id="user-email"></div>
+                </div>
+            </div>
+            <div class="header-stats">
+                <div style="display: flex; gap: 20px;">
+                    <div style="text-align: center;">
+                        <div style="font-size: 24px; font-weight: bold; color: var(--accent-blue);" id="sessions-count">0</div>
+                        <div style="color: var(--text-secondary); font-size: 14px;">Сессий</div>
+                    </div>
+                    <div style="text-align: center;">
+                        <div style="font-size: 24px; font-weight: bold; color: var(--accent-purple);" id="projects-count">0</div>
+                        <div style="color: var(--text-secondary); font-size: 14px;">Проектов</div>
+                    </div>
+                </div>
+            </div>
+        </header>
+        
+        <div class="dashboard-grid">
+            <!-- Карточки остаются такими же, как в оригинале, но адаптированные под новый стиль -->
+            <div class="dashboard-card">
+                <div class="card-header">
+                    <div class="card-icon">
+                        <i class="fas fa-user-shield"></i>
+                    </div>
+                    <h3 class="card-title">Безопасность аккаунта</h3>
+                </div>
+                <div class="card-content">
+                    <p>Настройте параметры безопасности вашего аккаунта</p>
+                    <div style="margin-top: 20px;">
+                        <button class="security-btn" id="change-password">
+                            <i class="fas fa-key"></i>
+                            Сменить пароль
+                        </button>
+                        <button class="security-btn" id="enable-2fa">
+                            <i class="fas fa-shield-alt"></i>
+                            Включить 2FA
+                        </button>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Остальные карточки аналогично -->
+        </div>
+    </div>
+    
+    <script src="particles.js"></script>
+    <script>
+        // Инициализация Supabase
+        const SUPABASE_URL = 'https://jacoyuuictmjascjqqpq.supabase.co';
+        const SUPABASE_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImphY295dXVpY3RtamFzY2pxcXBxIiwicm9sZSI6ImFub24iLCJpYXQiOjE3MDM5MjQyNDgsImV4cCI6MjAxOTUwMDI0OH0.KN6nlrraZeuYtQRutUrABe1qlcfe7TsVH1cUplNAiDs';
+        
+        const supabase = supabase.createClient(SUPABASE_URL, SUPABASE_KEY);
+        
+        document.addEventListener('DOMContentLoaded', async () => {
+            // Проверяем авторизацию
+            const { data: { session }, error } = await supabase.auth.getSession();
+            
+            if (!session) {
+                window.location.href = 'index-Auth.html';
+                return;
+            }
+            
+            // Загружаем данные пользователя
+            loadUserData(session.user);
+            
+            // Настройка обработчиков событий
+            setupEventListeners();
+        });
+        
+        // Остальной JavaScript код остается таким же, как в оригинале
+    </script>
+    <!-- В конце body -->
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+    <script src="script.js"></script>
+    <script src="profile-module.js"></script>
+    <script src="profile-sync.js"></script>
+</body>
+</html>
